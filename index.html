@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anuvab Pal — Backend & Security Developer</title>
+<meta name="description" content="Anuvab Pal — Backend and security-focused software developer. Java, Spring Boot, full-stack, applied cryptography.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0B1220;
+    --surface:#121B2E;
+    --surface-hover:#16233A;
+    --border:#22304A;
+    --border-strong:#2E4166;
+    --text-primary:#E7ECF5;
+    --text-secondary:#93A1BC;
+    --text-muted:#5C6884;
+    --accent:#4FD1C5;
+    --accent-dim:#2C7268;
+    --amber:#F2B84B;
+    --font-display:'Space Grotesk',sans-serif;
+    --font-body:'Inter',sans-serif;
+    --font-mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text-primary);
+    font-family:var(--font-body);
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+
+  /* background grid texture */
+  .grid-bg{
+    position:fixed;inset:0;z-index:-1;
+    background-image:
+      linear-gradient(rgba(79,209,197,0.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(79,209,197,0.035) 1px, transparent 1px);
+    background-size:48px 48px;
+    mask-image:radial-gradient(ellipse 80% 50% at 50% 0%, black 40%, transparent 90%);
+  }
+
+  /* nav */
+  nav{
+    position:sticky;top:0;z-index:10;
+    background:rgba(11,18,32,0.85);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--border);
+  }
+  nav .wrap{display:flex;justify-content:space-between;align-items:center;height:60px;}
+  .brand{font-family:var(--font-mono);font-size:14px;color:var(--accent);letter-spacing:0.02em;}
+  .navlinks{display:flex;gap:28px;font-size:13px;color:var(--text-secondary);}
+  .navlinks a:hover{color:var(--text-primary);}
+  @media (max-width:640px){.navlinks{display:none;}}
+
+  /* hero */
+  .hero{padding:96px 0 72px;}
+  .status-line{
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--font-mono);font-size:12px;
+    color:var(--text-secondary);
+    border:1px solid var(--border);
+    padding:6px 12px;border-radius:100px;
+    margin-bottom:28px;
+  }
+  .dot{
+    width:6px;height:6px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 0 rgba(79,209,197,0.5);
+    animation:pulse 2.2s infinite;
+  }
+  @keyframes pulse{
+    0%{box-shadow:0 0 0 0 rgba(79,209,197,0.45);}
+    70%{box-shadow:0 0 0 8px rgba(79,209,197,0);}
+    100%{box-shadow:0 0 0 0 rgba(79,209,197,0);}
+  }
+  h1{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:44px;
+    line-height:1.15;
+    letter-spacing:-0.01em;
+    max-width:640px;
+  }
+  h1 span{color:var(--accent);}
+  .hero p{
+    margin-top:20px;
+    font-size:17px;
+    color:var(--text-secondary);
+    max-width:560px;
+  }
+  .hero-actions{display:flex;gap:12px;margin-top:32px;flex-wrap:wrap;}
+  .btn{
+    font-family:var(--font-mono);
+    font-size:13px;
+    padding:11px 20px;
+    border-radius:6px;
+    border:1px solid var(--border-strong);
+    display:inline-flex;align-items:center;gap:8px;
+    transition:border-color 0.15s, background 0.15s;
+  }
+  .btn-primary{background:var(--accent);color:#04211E;border-color:var(--accent);font-weight:500;}
+  .btn-primary:hover{background:#63DBD0;}
+  .btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+
+  section{padding:56px 0;border-top:1px solid var(--border);}
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:12px;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-bottom:8px;
+  }
+  h2{
+    font-family:var(--font-display);
+    font-weight:600;
+    font-size:26px;
+    margin-bottom:32px;
+  }
+
+  /* stack */
+  .stack-group{margin-bottom:20px;}
+  .stack-label{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);margin-bottom:10px;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .chip{
+    font-family:var(--font-mono);
+    font-size:13px;
+    padding:6px 12px;
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:6px;
+    color:var(--text-secondary);
+  }
+
+  /* project cards */
+  .projects{display:flex;flex-direction:column;gap:14px;}
+  .card{
+    background:var(--surface);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:22px 24px;
+    transition:border-color 0.15s, transform 0.15s;
+  }
+  .card:hover{border-color:var(--border-strong);transform:translateY(-1px);}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;flex-wrap:wrap;}
+  .card-title{font-family:var(--font-display);font-size:18px;font-weight:600;}
+  .status-badge{
+    font-family:var(--font-mono);
+    font-size:11px;
+    display:inline-flex;align-items:center;gap:6px;
+    padding:4px 10px;border-radius:100px;
+    white-space:nowrap;
+  }
+  .status-live{background:rgba(79,209,197,0.1);color:var(--accent);border:1px solid var(--accent-dim);}
+  .status-progress{background:rgba(242,184,75,0.1);color:var(--amber);border:1px solid #8A6423;}
+  .status-badge .dot{width:5px;height:5px;}
+  .status-progress .dot{background:var(--amber);box-shadow:none;animation:none;}
+  .card-desc{color:var(--text-secondary);font-size:14.5px;margin-top:10px;max-width:640px;}
+  .card-tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:16px;}
+  .tag{font-family:var(--font-mono);font-size:11px;color:var(--text-muted);background:rgba(255,255,255,0.03);border:1px solid var(--border);padding:3px 8px;border-radius:4px;}
+  .card-links{display:flex;gap:16px;margin-top:16px;font-family:var(--font-mono);font-size:12.5px;}
+  .card-links a{color:var(--accent);display:inline-flex;align-items:center;gap:5px;}
+  .card-links a:hover{text-decoration:underline;}
+  .card-links .muted{color:var(--text-muted);}
+
+  /* certifications */
+  .cert-list{display:flex;flex-direction:column;gap:0;}
+  .cert-row{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:14px 0;border-bottom:1px solid var(--border);
+    font-size:14.5px;
+  }
+  .cert-row:last-child{border-bottom:none;}
+  .cert-name{color:var(--text-primary);}
+  .cert-issuer{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);}
+
+  /* achievements */
+  .ach-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;}
+  .ach-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px 20px;}
+  .ach-num{font-family:var(--font-mono);font-size:22px;color:var(--accent);font-weight:500;}
+  .ach-label{font-size:13px;color:var(--text-secondary);margin-top:4px;}
+
+  /* footer / contact */
+  footer{padding:64px 0 48px;border-top:1px solid var(--border);}
+  .contact-row{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:24px;}
+  .footer-links{display:flex;gap:20px;flex-wrap:wrap;font-family:var(--font-mono);font-size:13px;}
+  .footer-links a{color:var(--text-secondary);}
+  .footer-links a:hover{color:var(--accent);}
+  .footer-note{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);margin-top:32px;}
+
+  @media (max-width:640px){
+    h1{font-size:32px;}
+    .hero{padding:64px 0 48px;}
+    section{padding:40px 0;}
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">anuvab@dev:~$</div>
+    <div class="navlinks">
+      <a href="#stack">Stack</a>
+      <a href="#projects">Projects</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="status-line"><span class="dot"></span>open to backend / security developer roles</div>
+    <h1>Anuvab Pal builds backend systems that take <span>security</span> seriously.</h1>
+    <p>B.Tech CSE graduate (2025) working across Java, Spring Boot, and full-stack development — from JWT auth and hybrid encryption to AI-assisted developer tooling. Every project below is deployed, not just committed.</p>
+    <div class="hero-actions">
+      <a class="btn btn-primary" href="#projects">View projects</a>
+      <a class="btn btn-ghost" href="Anuvab_Pal_CV.pdf" target="_blank">Download resume ↓</a>
+      <a class="btn btn-ghost" href="https://github.com/AnuvabPal7" target="_blank">GitHub ↗</a>
+    </div>
+  </div>
+</header>
+
+<section id="stack">
+  <div class="wrap">
+    <div class="eyebrow">Tech stack</div>
+    <h2>What I build with</h2>
+
+    <div class="stack-group">
+      <div class="stack-label">languages</div>
+      <div class="chips">
+        <span class="chip">Java</span>
+        <span class="chip">SQL</span>
+        <span class="chip">Python</span>
+        <span class="chip">C</span>
+        <span class="chip">C++</span>
+      </div>
+    </div>
+    <div class="stack-group">
+      <div class="stack-label">frameworks</div>
+      <div class="chips">
+        <span class="chip">Spring Boot</span>
+        <span class="chip">React</span>
+        <span class="chip">LangChain</span>
+        <span class="chip">Streamlit</span>
+      </div>
+    </div>
+    <div class="stack-group">
+      <div class="stack-label">security</div>
+      <div class="chips">
+        <span class="chip">JWT</span>
+        <span class="chip">BCrypt</span>
+        <span class="chip">RSA-OAEP</span>
+        <span class="chip">AES-256-GCM</span>
+      </div>
+    </div>
+    <div class="stack-group">
+      <div class="stack-label">data & deploy</div>
+      <div class="chips">
+        <span class="chip">MySQL</span>
+        <span class="chip">TiDB</span>
+        <span class="chip">ChromaDB</span>
+        <span class="chip">PostgreSQL</span>
+        <span class="chip">Docker</span>
+        <span class="chip">Render</span>
+        <span class="chip">Vercel</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="projects">
+  <div class="wrap">
+    <div class="eyebrow">Service status</div>
+    <h2>Featured projects</h2>
+
+    <div class="projects">
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-title">SecureSign</div>
+          <div class="status-badge status-live"><span class="dot"></span>deployed</div>
+        </div>
+        <p class="card-desc">Full-stack e-signature platform for secure PDF upload, signing, and document sharing. JWT authentication with BCrypt hashing, drag-and-drop signature placement, PDF stamping via Apache PDFBox, and email-based signing workflows.</p>
+        <div class="card-tags">
+          <span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">React</span><span class="tag">MySQL</span><span class="tag">Docker</span>
+        </div>
+        <div class="card-links">
+          <a href="https://digital-signature-app-gamma.vercel.app" target="_blank">live demo →</a>
+          <a href="https://github.com/AnuvabPal7/digital-signature-app" target="_blank">repo →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-title">AI Code Review Assistant</div>
+          <div class="status-badge status-live"><span class="dot"></span>deployed</div>
+        </div>
+        <p class="card-desc">Combines Checkstyle, PMD, and SpotBugs with an LLM reviewer (Groq · Llama 3.3 70B) to review Java code — flags bugs, security issues, and performance problems, and uses Socratic questioning on logical bugs to teach rather than just fix. Also estimates cyclomatic complexity and Big-O, and exports PDF review reports.</p>
+        <div class="card-tags">
+          <span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">PostgreSQL</span><span class="tag">Docker</span><span class="tag">Groq LLM</span>
+        </div>
+        <div class="card-links">
+          <a href="https://ai-code-review-assistant-lemon-one.vercel.app" target="_blank">live demo →</a>
+          <a href="https://github.com/AnuvabPal7/ai-code-review-assistant" target="_blank">repo →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-title">RAG Document QA System</div>
+          <div class="status-badge status-live"><span class="dot"></span>deployed</div>
+        </div>
+        <p class="card-desc">Retrieval-augmented generation pipeline for semantic question answering over custom documents. HuggingFace embeddings and ChromaDB for retrieval, Groq Llama 3 for generation, with category-based metadata filtering and source traceability.</p>
+        <div class="card-tags">
+          <span class="tag">Python</span><span class="tag">LangChain</span><span class="tag">ChromaDB</span><span class="tag">Groq</span><span class="tag">Streamlit</span>
+        </div>
+        <div class="card-links">
+          <a href="https://github.com/AnuvabPal7/rag-document-qa-system" target="_blank">repo →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-title">GrowEasy AI CSV Importer</div>
+          <div class="status-badge status-live"><span class="dot"></span>deployed</div>
+        </div>
+        <p class="card-desc">AI-powered CSV importer that maps arbitrary formats — Facebook Lead Ads, Google Ads, messy spreadsheets — into a CRM's exact schema. LLM-driven field mapping and enum normalization, with a contact-info safety net that forces a single-row retry before flagging anything for manual review.</p>
+        <div class="card-tags">
+          <span class="tag">TypeScript</span><span class="tag">Next.js</span><span class="tag">Express</span><span class="tag">Groq LLM</span>
+        </div>
+        <div class="card-links">
+          <a href="https://groweasy-csv-importer-omega.vercel.app" target="_blank">live demo →</a>
+          <a href="https://github.com/AnuvabPal7/groweasy-csv-importer" target="_blank">repo →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-top">
+          <div class="card-title">UPI Offline Mesh</div>
+          <div class="status-badge status-live"><span class="dot"></span>deployed</div>
+        </div>
+        <p class="card-desc">Offline payment settlement system simulating UPI payments routed through a Bluetooth-style mesh network. Payment packets secured with hybrid RSA-OAEP + AES-256-GCM encryption, with an idempotent settlement pipeline for exactly-once processing under concurrent duplicates.</p>
+        <div class="card-tags">
+          <span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">RSA-OAEP</span><span class="tag">AES-256-GCM</span><span class="tag">MySQL</span>
+        </div>
+        <div class="card-links">
+          <a href="https://github.com/AnuvabPal7/upi-offline-mesh" target="_blank">repo →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="certifications">
+  <div class="wrap">
+    <div class="eyebrow">Verified</div>
+    <h2>Certifications</h2>
+    <div class="cert-list">
+      <div class="cert-row">
+        <span class="cert-name">Machine Learning with Python</span>
+        <span class="cert-issuer">IBM · Coursera</span>
+      </div>
+      <div class="cert-row">
+        <span class="cert-name">Introduction to Cybersecurity Tools & Cyber Attacks</span>
+        <span class="cert-issuer">IBM · Coursera</span>
+      </div>
+      <div class="cert-row">
+        <span class="cert-name">Object-Oriented Data Structures in C++</span>
+        <span class="cert-issuer">University of Illinois · Coursera</span>
+      </div>
+      <div class="cert-row">
+        <span class="cert-name">Java Basic Certificate</span>
+        <span class="cert-issuer">HackerRank</span>
+      </div>
+    </div>
+
+    <div class="ach-grid" style="margin-top:32px;">
+      <div class="ach-card">
+        <div class="ach-num">★★★</div>
+        <div class="ach-label">HackerRank — Java rating</div>
+      </div>
+      <div class="ach-card">
+        <div class="ach-num">50+</div>
+        <div class="ach-label">LeetCode SQL problems solved — Top SQL 50 badge</div>
+      </div>
+      <div class="ach-card">
+        <div class="ach-num">7.94</div>
+        <div class="ach-label">CGPA · B.Tech CSE, Narula Institute of Technology</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="eyebrow">Get in touch</div>
+    <div class="contact-row">
+      <h2 style="margin-bottom:0;">Let's build something reliable.</h2>
+      <div class="footer-links">
+        <a href="mailto:anuvab7903@gmail.com">Email ↗</a>
+        <a href="https://www.linkedin.com/in/anuvab-pal-2a721237a/" target="_blank">LinkedIn ↗</a>
+        <a href="https://github.com/AnuvabPal7" target="_blank">GitHub ↗</a>
+        <a href="https://leetcode.com/u/ANUVAB7/" target="_blank">LeetCode ↗</a>
+        <a href="https://www.hackerrank.com/profile/anuvab7903" target="_blank">HackerRank ↗</a>
+      </div>
+    </div>
+    <div class="footer-note">Kolkata, India · built and deployed by hand, no template</div>
+  </div>
+</footer>
+
+</body>
+</html>
